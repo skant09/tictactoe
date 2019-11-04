@@ -8,7 +8,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,4 +19,34 @@
 
 .App-link {
   color: #09d3ac;
+}
+
+.ticTac {
+  display: flex;
+  justify-content: center;
+}
+.ticTac button {
+  width: 100px;
+  height: 40px;
+  margin: 10px;
+}
+.ticTac button.highlight {
+  border-bottom: 2px solid green;
+}
+.game {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.game .row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.row .element {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  border: 1px solid black;
+  text-align: center;
 }
