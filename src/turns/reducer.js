@@ -14,7 +14,7 @@ function reducer(state = initialState, action) {
         return 'X';
       }
     default:
-      return initialState;
+      return state;
   }
 }
 
