@@ -6,7 +6,6 @@ const initGameState = [
   [0,0,0],
   [0,0,0]
 ];
-let turnNumber = 0;
 
 const getState = (row, column, turn) => {
   if(turn === 'X'){
@@ -35,7 +34,6 @@ function gameState(state = initGameState, action) {
         } 
         return [...value];
       })
-      turnNumber = turnNumber+1;
       return newState;
 
     default:
