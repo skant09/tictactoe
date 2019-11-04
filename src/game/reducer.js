@@ -3,7 +3,7 @@ import * as gameParamsActions from '../gameParams/actions'
 
 const initGameState = [
   [0,0,0],
-  [1,0,0],
+  [0,0,0],
   [0,0,0]
 ];
 let turnNumber = 0;

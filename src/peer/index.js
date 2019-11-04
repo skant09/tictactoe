@@ -7,11 +7,10 @@ import { changeTurns } from '../turns/actions';
 var peer = window.peer = new window.Peer({key: 'lwjd5qra8257b9'});
 function setDataReceive(connection, dispatch){
   connection.on('data', function(data) {
-    // send data
-    console.log('data received', data);
-    const {row, column, turn} = data;
+    console.log(data);
+    const {row, column, turn, turnNumber} = data;
     dispatch(gameAction.changeGameState({row, column, turn}));
-    dispatch(changeTurns(turn));
+    dispatch(changeTurns({turn, turnNumber}));
   });
 }
 const Peer = props => {
@@ -33,18 +32,14 @@ const Peer = props => {
   }, [connectToPeerId, props.dispatch]);
 
   peer.on('connection', function(peerjsConnection) {
-    console.log('connected DataConnection', peerjsConnection);
+    // TODO: find way to avoid making this global
     window.peer.connectedRTC = peerjsConnection;
     peerjsConnection.on('open', function(peer) {
-      console.log('connected', peerjsConnection);
-      // Receive messages
       setDataReceive(peerjsConnection, props.dispatch);
-      // peerjsConnection.send('Hello from markers-page!');
     });
   });
 
   const handleConnectToPeer = e => {
-    console.log('setConnectToPeerID');
     setConnectToPeerID(e.target.value);
   }
 

@@ -9,10 +9,11 @@ const initialState = {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case actions.CHANGE_TURN:
-      if(state === 'X'){
-        return 'O';
+      ++state.turnNumber;
+      if(action.payload === 'X'){
+        return {...state, turnNumber: state.turnNumber++, turn: 'O'};
       } 
-      return 'X';
+      return {...state,  turnNumber: state.turnNumber++, turn: 'X'};
     default:
       return state;
   }
