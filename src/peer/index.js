@@ -24,6 +24,15 @@ const Peer = props => {
   }, [])
 
   useEffect(() => {
+    peer.on('connection', function(peerjsConnection) {
+      console.log('connected');
+      // TODO: find way to avoid making this global
+      window.peer.connectedRTC = peerjsConnection;
+      peerjsConnection.on('open', function(peer) {
+        setDataReceive(peerjsConnection, props.dispatch);
+      });
+    });
+    
     async function connectWithPeer() {
       var peerjsConnection = window.peer.connectedRTC = await peer.connect(connectToPeerId);
       setDataReceive(peerjsConnection, props.dispatch);
@@ -31,13 +40,6 @@ const Peer = props => {
     connectWithPeer();
   }, [connectToPeerId, props.dispatch]);
 
-  peer.on('connection', function(peerjsConnection) {
-    // TODO: find way to avoid making this global
-    window.peer.connectedRTC = peerjsConnection;
-    peerjsConnection.on('open', function(peer) {
-      setDataReceive(peerjsConnection, props.dispatch);
-    });
-  });
 
   const handleConnectToPeer = e => {
     setConnectToPeerID(e.target.value);

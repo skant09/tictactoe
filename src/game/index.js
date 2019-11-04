@@ -5,18 +5,20 @@ import { changeTurns } from '../turns/actions';
 export { default as reducer } from './reducer';
 
 export const Game = props => {
+    console.log(props);
     const handleGameTurn = (row, column) => async e => {
       const online = true;
+      const {turn, turnNumber} = props;
       if(online){
         await window.peer.connectedRTC.send({
-          turnNumber: props.turnNumber + 1, row, column, turn: props.turn
+          turnNumber, row, column, turn
         })
       }
     
       if(props.gameState[row][column] === 0){
         // changeGameState(row, column)
-        props.changeGameState({row, column, turn: props.turn});  
-        props.changeTurns(props.turn);  
+        props.changeGameState({row, column, turn});  
+        props.changeTurns({turn, turnNumber});  
       }
     }   
     var sizeArray = new Array(props.size).fill(0);
