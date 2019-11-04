@@ -13,7 +13,7 @@ function gameParams(state = initialState, action) {
       // validation for size vs successcriteria
       return {...initialState, successCriteria: action.payload}
     default:
-      return state
+      return initialState
   }
 }
 

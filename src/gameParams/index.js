@@ -9,11 +9,11 @@ function GameParams(props){
   
   const handleSizeChange = e => {
     setSize(e.target.value);
-    changeSize(size);
+    props.changeSize(size);
   }
   const handleSuccessCriteriaChange = e => {
     setSuccessCriteria(e.target.value);
-    changeSuccessCriteria(successCriteria);
+    props.changeSuccessCriteria(successCriteria);
   }
   
   return (<div className="input">
@@ -26,6 +26,6 @@ function GameParams(props){
 
 const mapStateToProps = (state) => ({size:state.gameParams.size, successCriteria: state.gameParams.successCriteria})
 const mapDispatchToProps = dispatch => ({
-  changeSize: payload => dispatch(changeSize(payload))
+  changeSize: payload => parseInt(payload, 10) ? dispatch(changeSize(payload)) : null,
 })
 export default connect(mapStateToProps, mapDispatchToProps)(GameParams);
