@@ -21,11 +21,10 @@ function gameState(state = initGameState, action) {
       return new Array(action.payload).fill(0).map((v,i)=> new Array(action.payload).fill(0));
 
     case actions.CHANGE_GAME_STATE: 
-      console.log(state);
       var {row, column, turn} = action.payload;
       var newState = state.map((value, _row)=>{
         if(_row === row){
-          value.map((value, _column)=> {
+          return value.map((value, _column)=> {
             if(_column === column){
               return getState(row, column, turn);
             } else {
