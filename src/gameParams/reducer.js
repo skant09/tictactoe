@@ -8,10 +8,10 @@ function gameParams(state = initialState, action) {
   switch (action.type) {
     case actions.CHANGE_SIZE:
       // validation for size vs successcriteria
-      return {...initialState, size: action.payload}
+      return {...state, size: action.payload}
     case actions.CHANGE_SUCCESS_CRITERIA:
       // validation for size vs successcriteria
-      return {...initialState, successCriteria: action.payload}
+      return {...state, successCriteria: action.payload}
     default:
       return initialState
   }

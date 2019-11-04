@@ -2,17 +2,20 @@ import * as actions from './actions'
 
 const turns = ['X', 'O'];
 
-const initialState = {
-  turn: turns[0]
-}
+const initialState = turns[0]
 
-function gameParams(state = initialState, action) {
+function reducer(state = initialState, action) {
   switch (action.type) {
     case actions.CHANGE_TURN:
-      return {...initialState, turn: state.turn === initialState.turn ? turns[1] : turns[0]}
+      if(state === 'X'){
+        return 'O';
+      } 
+      if (state === 'O') {
+        return 'X';
+      }
     default:
       return initialState;
   }
 }
 
-export default gameParams;
+export default reducer;

@@ -11,7 +11,7 @@ function Turns(props) {
 }
 
 
-const mapStateToProps = (state) => ({turn:state.turns.turn})
+const mapStateToProps = (state) => ({turn:state.turns})
 const mapDispatchToProps = dispatch => ({
   changeTurns: payload => dispatch(changeTurns(payload))
 })
