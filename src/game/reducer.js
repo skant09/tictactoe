@@ -1,10 +1,11 @@
 import * as actions from './actions';
 import * as gameParamsActions from '../gameParams/actions'
+import { totalmem } from 'os';
 
 const initGameState = [
   [0,0,0],
   [0,0,0],
-  [0,0,0]
+  [1,1,0]
 ];
 
 const getState = (row, column, turn) => {
@@ -13,6 +14,46 @@ const getState = (row, column, turn) => {
   } else if (turn === 'O') {
     return  1;
   }
+}
+
+function findLengthInDirection(position, gameState, value, change) {
+  let {row, column} = position;
+  let upwardLength = 0;
+  let downwardLength = 0;
+  // positive direction
+  while(row >= 0 && row < gameState.length && column >= 0 && column < gameState.length && gameState[row][column]) {
+    if(gameState[row][column] === value){
+      downwardLength++;
+      row = row + change[0];
+      column = column + change[1];
+    } else {
+      break;
+    }
+  }
+  row = position.row - change[0];
+  column = position.column - change[1];
+  while(row >= 0 && row < gameState.length && column >= 0 && column < gameState.length && gameState[row][column]) {
+    if(gameState[row][column] === value) {
+      upwardLength++;
+      row = row - change[0];
+      column = column - change[1];
+    } else {
+      break;
+    }
+  }
+  return upwardLength + downwardLength;
+}
+
+function isWinning({row, column}, gameState){
+  var directions = [[1,0], [0, 1], [-1, -1], [-1, 1]];
+  for (var i=0; i < directions.length; i++) {
+    var lengthInDirection = findLengthInDirection({row, column}, gameState, gameState[row][column], directions[i]);
+    console.log(lengthInDirection, directions[i]);
+    if(lengthInDirection > 3) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function gameState(state = initGameState, action) {
@@ -31,9 +72,12 @@ function gameState(state = initGameState, action) {
               return value;
             }
           })
-        } 
+        }
         return [...value];
       })
+      if(!isWinning(action.payload, newState)) {
+        return newState;
+      }
       return newState;
 
     default:

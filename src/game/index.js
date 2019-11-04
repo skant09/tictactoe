@@ -5,7 +5,6 @@ import { changeTurns } from '../turns/actions';
 export { default as reducer } from './reducer';
 
 export const Game = props => {
-    console.log(props);
     const handleGameTurn = (row, column) => async e => {
       const online = true;
       const {turn, turnNumber} = props;
@@ -17,8 +16,8 @@ export const Game = props => {
     
       if(props.gameState[row][column] === 0){
         // changeGameState(row, column)
-        props.changeGameState({row, column, turn});  
-        props.changeTurns({turn, turnNumber});  
+        props.changeGameState({row, column, turn});
+        props.changeTurns({turn, turnNumber});
       }
     }   
     var sizeArray = new Array(props.size).fill(0);

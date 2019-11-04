@@ -7,8 +7,6 @@ const initialState = {
 function gameParams(state = initialState, action) {
   switch (action.type) {
     case actions.CHANGE_SIZE:
-      console.log(action);
-      
       // validation for size vs successcriteria
       return {...state, size: action.payload}
     case actions.CHANGE_SUCCESS_CRITERIA:

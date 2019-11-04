@@ -14,7 +14,9 @@ function GameParams(props){
       props.changeSize(_size);
     }
   }
+  
   const handleSuccessCriteriaChange = e => {
+    if(e.target.value > size) return;
     setSuccessCriteria(e.target.value);
     props.changeSuccessCriteria(e.target.value);
   }
