@@ -5,6 +5,7 @@ import { default as Turns } from './turns';
 import './App.css';
 import { Provider } from 'react-redux'
 import store from './store';
+import Peer from './peer';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <h1>Mega</h1>
         </header>
         <GameParams />
+        <Peer />
         <Turns/>
         <Game />
       </div>

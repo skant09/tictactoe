@@ -1,22 +1,27 @@
-import React, {useState, Component} from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import { changeGameState } from './actions';
 import { changeTurns } from '../turns/actions';
-export {default as reducer} from './reducer';
+export { default as reducer } from './reducer';
 
-export class Game extends Component {
-  render(){
-    const handleGameTurn = (row, column) => e => {
-      if(this.props.gameState[row][column] === 0){
-        // changeGameState(row, column)
-        this.props.changeGameState({row, column, turn: this.props.turn});  
-        this.props.changeTurns(this.props.turn);  
+export const Game = props => {
+    const handleGameTurn = (row, column) => async e => {
+      const online = true;
+      if(online){
+        await window.peer.connectedRTC.send({
+          turnNumber: props.turnNumber + 1, row, column, turn: props.turn
+        })
       }
-    }
     
-    var sizeArray = new Array(this.props.size).fill(0);
+      if(props.gameState[row][column] === 0){
+        // changeGameState(row, column)
+        props.changeGameState({row, column, turn: props.turn});  
+        props.changeTurns(props.turn);  
+      }
+    }   
+    var sizeArray = new Array(props.size).fill(0);
     const getState = (row, column) => {
-      switch (this.props.gameState[row][column]) {
+      switch (props.gameState[row][column]) {
         case 2: 
           return 'X';
         case 1:
@@ -25,7 +30,6 @@ export class Game extends Component {
         default:
           return '';
       }
-
     }
     return (<div className="game">
       { 
@@ -36,11 +40,12 @@ export class Game extends Component {
         </div>))
       }
     </div>);
-  }
 }
 
-const mapStateToProps = ({gameParams, gameState, turns}) => ({size: gameParams.size, successCriteria: gameParams.successCriteria, gameState, turn: turns});
+
+const mapStateToProps = ({gameParams, gameState, turns}) => ({size: gameParams.size, successCriteria: gameParams.successCriteria, gameState, turn: turns.turn, turnNumber: turns.turnNumber});
 const mapDispatchToProps = dispatch => ({
+  dispatch,
   changeGameState: payload => dispatch(changeGameState(payload)),
   changeTurns: payload => dispatch(changeTurns(payload))
 })

@@ -1,8 +1,10 @@
 import * as actions from './actions'
 
 const turns = ['X', 'O'];
-
-const initialState = turns[0]
+const initialState = {
+  turnNumber: 0,
+  turn: turns[0]
+}
 
 function reducer(state = initialState, action) {
   switch (action.type) {
@@ -10,9 +12,7 @@ function reducer(state = initialState, action) {
       if(state === 'X'){
         return 'O';
       } 
-      if (state === 'O') {
-        return 'X';
-      }
+      return 'X';
     default:
       return state;
   }

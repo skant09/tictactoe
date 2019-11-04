@@ -10,5 +10,4 @@ import logger from 'redux-logger'
 const rootReducer = combineReducers({gameParams, turns, gameState})
 const store = createStore(rootReducer, applyMiddleware(...[thunk, logger]));
 
-// console.log(store.getState())
 export default store;

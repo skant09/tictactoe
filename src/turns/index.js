@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import {changeTurns} from './actions';
 export {default as reducer} from './reducer';
@@ -11,7 +11,7 @@ function Turns(props) {
 }
 
 
-const mapStateToProps = (state) => ({turn:state.turns})
+const mapStateToProps = (state) => ({turn:state.turn})
 const mapDispatchToProps = dispatch => ({
   changeTurns: payload => dispatch(changeTurns(payload))
 })
