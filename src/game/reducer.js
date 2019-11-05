@@ -44,12 +44,13 @@ function findLengthInDirection(position, gameState, value, change) {
   return upwardLength + downwardLength;
 }
 
-function isWinning({row, column}, gameState, successCriteria){
+function isWinning({row, column}, gameState, successCriteria, turn){
   var directions = [[1,0], [0, 1], [-1, -1], [-1, 1]];
   for (var i=0; i < directions.length; i++) {
     var lengthInDirection = findLengthInDirection({row, column}, gameState, gameState[row][column], directions[i]);
     if(lengthInDirection >= successCriteria) {
-      document.title = "Game Over";
+      document.title = "GAME OVER"
+      window.peer.connectedRTC.send({action: 'gameOver', turn})
       return true;
     }
   }
@@ -75,7 +76,7 @@ function gameState(state = initGameState, action) {
         }
         return [...value];
       })
-      isWinning({row, column}, newState, successCriteria);
+      isWinning({row, column}, newState, successCriteria, turn);
       return newState;
     default:
       return state;

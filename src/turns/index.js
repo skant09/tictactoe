@@ -5,8 +5,8 @@ export {default as reducer} from './reducer';
 
 function Turns(props) {
   return (<div className="ticTac">
-    <button className={props.turn==='X' ? 'highlight': ''}>X</button>
-    <button className={props.turn==='O' ? 'highlight': ''}>O</button>
+    <button className={props.turn==='X' ? 'highlight': ''}> X </button>
+    <button className={props.turn==='O' ? 'highlight': ''}> O </button>
   </div>)
 }
 

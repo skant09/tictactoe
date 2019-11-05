@@ -26,6 +26,9 @@ function reducer(state = initialState, action) {
     case actions.SET_CONNECTED_TO_PEER:
       return {...state, connectedToPeer: action.payload || true};
     
+    case actions.SET_CONNECTED_TO_PEER:
+      return {...state, winner: action.payload};
+    
     default:
       return state;
   }

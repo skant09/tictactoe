@@ -3,18 +3,23 @@ import { connect } from 'react-redux'
 
 import * as gameAction from '../game/actions';
 import { changeSize, changeSuccessCriteria } from '../gameParams/actions';
-import { changeTurns, freezeTurns, unfreezeTurns, setConnectedToPeer } from '../turns/actions';
+import { changeTurns, freezeTurns, unfreezeTurns, setConnectedToPeer, setWinner } from '../turns/actions';
 
 var peer = window.peer = new window.Peer({key: 'lwjd5qra8257b9'});
 function setDataReceive(connection, dispatch){
   connection.on('data', function(data) {
     console.log('data received', data);
+    if(data.action === 'gameOver'){
+      document.title = "GAME OVER"
+    }
+
     if(data.action === 'setGameState'){
       const {row, column, turn, turnNumber} = data;
       dispatch(gameAction.changeGameState({row, column, turn}));
       dispatch(changeTurns({turn, turnNumber}));
       dispatch(unfreezeTurns())
     }
+
     if(data.action === 'setSize'){
       const {size, successCriteria} = data;
       dispatch(changeSize(size));
