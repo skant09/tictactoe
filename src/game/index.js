@@ -6,9 +6,9 @@ import {isWinning} from './reducer';
 export { default as reducer } from './reducer';
 
 export const Game = props => {
-  const {turn, turnNumber, size, successCriteria, connectedToPeer} = props;
-
+  const {turn, turnNumber, size, successCriteria, connectedToPeer, winner} = props;
   const [position, setPosition] = useState({});
+  // const [winner, setWinner] = useState(null);
   const handleGameTurn = (row, column) => async e => {
     if(props.turnFreeze) return;
     if(props.connectedToPeer){
@@ -27,20 +27,29 @@ export const Game = props => {
   useEffect(() => {
     // TODO: fix syncing size and successCriteria
     if(connectedToPeer){
-      window.peer.connectedRTC.send({action: 'setGameState', size, successCriteria})
+      window.peer 
+      && window.peer.connectedRTC
+      && window.peer.connectedRTC.send({action: 'setGameState', size, successCriteria})
     }
   }, [connectedToPeer]);
 
   useEffect(() => {
     const {row, column} = position;
     if(row!== undefined && column!== undefined){
-      const _isWinning = isWinning({row, column}, props.gameState, successCriteria, turn);
+      const _isWinning = isWinning({row, column}, props.gameState, successCriteria);
       if(_isWinning){
         document.title = "GAME OVER"
-        window.peer && window.peer.connectedRTC && window.peer.connectedRTC.send({action: 'gameOver', turn})
+        window.peer 
+        && window.peer.connectedRTC 
+        && window.peer.connectedRTC.send({action: 'gameOver', turn})
+
         console.log("GAME OVER");
         props.freezeTurns();
-        // props.setWinner(turn)
+        let winner = turn === 'X' ? 'O' : 'X';
+        if(connectedToPeer){
+          winner = turn;
+        }
+        props.setWinner(winner)
       }
     }
   }, [props.gameState])
@@ -58,15 +67,18 @@ export const Game = props => {
     }
   }
 
-  return (<div style={{'display': 'flex','flexDirection': 'column','justifyContent': 'center','textAlign': 'center', 'height': '50vh'}}><div className="game">
-    { 
-      sizeArray.map((value, row) => (<div className="row" key={row+' row'}>
-        {sizeArray.map((value, column)=> {
-          return (<div className="element" key={column + ' column'} onClick={handleGameTurn(row, column)}>{getState(row, column)}</div>)
-        })}
-      </div>))
-    }
-  </div></div>);
+  return (<div style={{'display': 'flex','flexDirection': 'column','justifyContent': 'center','textAlign': 'center', 'height': '50vh'}}>
+      <div className="game">
+        { 
+          sizeArray.map((value, row) => (<div className="row" key={row+' row'}>
+            {sizeArray.map((value, column)=> {
+              return (<div className="element" key={column + ' column'} onClick={handleGameTurn(row, column)}>{getState(row, column)}</div>)
+            })}
+          </div>))
+        }
+      </div>
+      {props.winner && <span> WINNER is {winner}</span>}
+    </div>);
 }
 
 
@@ -79,6 +91,7 @@ const mapStateToProps = ({gameParams, gameState: {gameState, gameOver}, turns}) 
     turn: turns.turn,
     turnFreeze: turns.turnFreeze,
     turnNumber: turns.turnNumber,
+    winner: turns.winner,
     connectedToPeer: turns.connectedToPeer 
   }
 };

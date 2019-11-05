@@ -21,6 +21,6 @@ export const setConnectedToPeer = payload => ({
   payload
 });
 export const setWinner = payload => ({
-  type: SET_CONNECTED_TO_PEER,
+  type: SET_WINNER,
   payload
 });

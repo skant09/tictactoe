@@ -44,7 +44,7 @@ function findLengthInDirection(position, gameState, value, change) {
   return upwardLength + downwardLength;
 }
 
-export function isWinning({row, column}, gameState, successCriteria, turn){
+export function isWinning({row, column}, gameState, successCriteria){
   var directions = [[1,0], [0, 1], [-1, -1], [-1, 1]];
   for (var i=0; i < directions.length; i++) {
     var lengthInDirection = findLengthInDirection({row, column}, gameState, gameState[row][column], directions[i]);
@@ -74,7 +74,6 @@ function gameState(state = initGameState, action) {
         }
         return [...value];
       })
-      // isWinning({row, column}, newState, successCriteria, turn);
       return newState;
     default:
       return state;
