@@ -1,6 +1,6 @@
 import * as actions from './actions';
 import * as gameParamsActions from '../gameParams/actions'
-import { totalmem } from 'os';
+import { combineReducers } from 'redux'
 
 const initGameState = [
   [0,0,0],
@@ -44,12 +44,12 @@ function findLengthInDirection(position, gameState, value, change) {
   return upwardLength + downwardLength;
 }
 
-function isWinning({row, column}, gameState){
+function isWinning({row, column}, gameState, successCriteria){
   var directions = [[1,0], [0, 1], [-1, -1], [-1, 1]];
   for (var i=0; i < directions.length; i++) {
     var lengthInDirection = findLengthInDirection({row, column}, gameState, gameState[row][column], directions[i]);
-    console.log(lengthInDirection, directions[i]);
-    if(lengthInDirection > 3) {
+    if(lengthInDirection >= successCriteria) {
+      document.title = "Game Over";
       return true;
     }
   }
@@ -62,7 +62,7 @@ function gameState(state = initGameState, action) {
       return new Array(action.payload).fill(0).map((v,i)=> new Array(action.payload).fill(0));
 
     case actions.CHANGE_GAME_STATE:
-      var {row, column, turn} = action.payload;
+      var {row, column, turn, successCriteria} = action.payload;
       var newState = state.map((value, _row)=>{
         if(_row === row){
           return value.map((value, _column)=> {
@@ -75,14 +75,22 @@ function gameState(state = initGameState, action) {
         }
         return [...value];
       })
-      if(!isWinning(action.payload, newState)) {
-        return newState;
-      }
+      console.log('game over');
+      isWinning({row, column}, newState, successCriteria);
       return newState;
-
     default:
       return state;
   }
 }
 
-export default gameState;
+function gameOver(state = false, action){
+  switch(action.type){
+    case actions.CHECK_GAME_OVER:
+      var {row, column, gameState, successCriteria} = action.payload;
+      return isWinning({row, column}, gameState, successCriteria);
+    default: 
+      return state;
+  }
+}
+
+export default combineReducers({gameState, gameOver});

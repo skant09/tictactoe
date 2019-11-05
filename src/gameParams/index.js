@@ -14,7 +14,7 @@ function GameParams(props){
       props.changeSize(_size);
     }
   }
-  
+
   const handleSuccessCriteriaChange = e => {
     if(e.target.value > size) return;
     setSuccessCriteria(e.target.value);
@@ -22,15 +22,15 @@ function GameParams(props){
   }
 
   return (<>
-      <div className="input">
-        <label htmlFor="size">Size of Square</label>
-        <input type="number" name="size" id="size" value={size} onChange={handleSizeChange} min={3} max={10}/>
-        <label htmlFor="successCriteria">Success Criteria</label>
-        <input type="number" name="successCriteria" id="successCriteria" value={successCriteria} onChange={handleSuccessCriteriaChange} min={3} max={10} />
-      </div></>)
+    <div className="input">
+      <label htmlFor="size">Size of Square</label>
+      <input type="number" name="size" id="size" value={size} onChange={handleSizeChange} min={3} max={10}/>
+      <label htmlFor="successCriteria">Success Criteria</label>
+      <input type="number" name="successCriteria" id="successCriteria" value={successCriteria} onChange={handleSuccessCriteriaChange} min={3} max={10} />
+    </div></>)
 }
 
-const mapStateToProps = (state) => ({size:state.gameParams.size, successCriteria: state.gameParams.successCriteria})
+const mapStateToProps = (state) => ({size: state.gameParams.size, successCriteria: state.gameParams.successCriteria})
 const mapDispatchToProps = dispatch => ({
   dispatch,
   changeSize: payload => parseInt(payload, 10) ? dispatch(changeSize(payload)) : null,
