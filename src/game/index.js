@@ -1,27 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { changeGameState, checkGameOver } from './actions';
-import { changeTurns } from '../turns/actions';
+import { changeTurns, freezeTurns } from '../turns/actions';
 export { default as reducer } from './reducer';
 
 export const Game = props => {
   
   const handleGameTurn = (row, column) => async e => {
-    const online = true;
+    if(props.freezeTurns) return;
+    props.freezeTurns();
     const {turn, turnNumber, successCriteria} = props;
-    if(online){
+    if(props.connected){
       await window.peer.connectedRTC.send({
         turnNumber, row, column, turn
       })
     }
 
     if(props.gameState[row][column] === 0){
-      // changeGameState(row, column)
       props.changeGameState({row, column, turn, successCriteria});
       props.changeTurns({turn, turnNumber});
     }
   }
-    
 
   var sizeArray = new Array(props.size).fill(0);
   const getState = (row, column) => {
@@ -55,14 +54,17 @@ const mapStateToProps = ({gameParams, gameState: {gameState, gameOver}, turns}) 
     gameState,
     gameOver,
     turn: turns.turn,
-    turnNumber: turns.turnNumber
+    turnFreeze: turns.turnFreeze,
+    turnNumber: turns.turnNumber,
+    connected: turns.connected 
   }
 };
 const mapDispatchToProps = dispatch => ({
   dispatch,
   changeGameState: payload => dispatch(changeGameState(payload)),
   checkGameOver: payload => dispatch(checkGameOver(payload)),
-  changeTurns: payload => dispatch(changeTurns(payload))
+  changeTurns: payload => dispatch(changeTurns(payload)),
+  freezeTurns: payload => dispatch(freezeTurns(payload))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

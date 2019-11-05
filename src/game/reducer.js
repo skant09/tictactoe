@@ -75,7 +75,6 @@ function gameState(state = initGameState, action) {
         }
         return [...value];
       })
-      console.log('game over');
       isWinning({row, column}, newState, successCriteria);
       return newState;
     default:

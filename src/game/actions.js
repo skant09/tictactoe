@@ -11,7 +11,3 @@ export const checkGameOver = payload => ({
   type: CHECK_GAME_OVER,
   payload
 })
-// export const changeGameSize = payload => console.log('changeGameSize', payload) || ({
-//   type: CHANGE_GAME_SIZE,
-//   payload
-// })
