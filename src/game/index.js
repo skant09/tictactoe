@@ -1,12 +1,14 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux'
 import { changeGameState, checkGameOver } from './actions';
 import { changeTurns, freezeTurns } from '../turns/actions';
+import {isWinning} from './reducer';
 export { default as reducer } from './reducer';
 
 export const Game = props => {
   const {turn, turnNumber, size, successCriteria, connectedToPeer} = props;
 
+  const [position, setPosition] = useState({});
   const handleGameTurn = (row, column) => async e => {
     if(props.connectedToPeer){
       if(props.turnFreeze) return;
@@ -15,7 +17,7 @@ export const Game = props => {
         turnNumber, row, column, turn, action: 'setGameState'
       })
     }
-
+    setPosition({row, column});
     if(props.gameState[row][column] === 0){
       props.changeGameState({row, column, turn, successCriteria});
       props.changeTurns({turn, turnNumber});
@@ -23,11 +25,23 @@ export const Game = props => {
   }
 
   useEffect(() => {
-    console.log(connectedToPeer);
+    // TODO: fix syncing size and successCriteria
     if(connectedToPeer){
       window.peer.connectedRTC.send({action: 'setGameState', size, successCriteria})
     }
   }, [connectedToPeer]);
+
+  useEffect(() => {
+    const {row, column} = position;
+    if(row!== undefined && column!== undefined){
+      const _isWinning = isWinning({row, column}, props.gameState, successCriteria, turn);
+      if(_isWinning){
+        document.title = "GAME OVER"
+        window.peer && window.peer.connectedRTC && window.peer.connectedRTC.send({action: 'gameOver', turn})
+        console.log("GAME OVER");
+      }
+    }
+  }, [props.gameState])
 
   var sizeArray = new Array(props.size).fill(0);
   const getState = (row, column) => {
