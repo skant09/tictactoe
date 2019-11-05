@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 
 import * as gameAction from '../game/actions';
-import { changeTurns, freezeTurns, unfreezeTurns } from '../turns/actions';
+import { changeTurns, freezeTurns, unfreezeTurns, setConnectedToPeer } from '../turns/actions';
 
 var peer = window.peer = new window.Peer({key: 'lwjd5qra8257b9'});
 function setDataReceive(connection, dispatch){
+  dispatch(setConnectedToPeer());
   connection.on('data', function(data) {
+    console.log('data received', data);
     const {row, column, turn, turnNumber} = data;
     dispatch(gameAction.changeGameState({row, column, turn}));
     dispatch(changeTurns({turn, turnNumber}));
@@ -24,21 +26,25 @@ const Peer = props => {
     });
   }, [])
 
-  peer.on('connection', function(peerjsConnection) {
-    setConnectToPeerID(peerjsConnection.peer);
-    // TODO: find way to avoid making this global
-    window.peer.connectedRTC = peerjsConnection;
-    peerjsConnection.on('open', function(peer) {
-      setDataReceive(peerjsConnection, props.dispatch);
+  useEffect(()=>{
+    peer.on('connection', function(peerjsConnection) {
+      setConnectToPeerID(peerjsConnection.peer);
+      // TODO: find way to avoid making this global
+      window.peer.connectedRTC = peerjsConnection;
+      peerjsConnection.on('open', function(peer) {
+        setDataReceive(peerjsConnection, props.dispatch);
+      });
     });
-  });
+  }, [])
   
   useEffect(() => {
     const connectWithPeer = async function () {
       var peerjsConnection = window.peer.connectedRTC = await peer.connect(connectToPeerId);
       setDataReceive(peerjsConnection, props.dispatch);
     }
-    connectWithPeer()
+    if(connectToPeerId.length > 3) {
+      connectWithPeer()
+    }
   }, [connectToPeerId])
 
   const handleConnectToPeer = e => {
@@ -54,9 +60,6 @@ const Peer = props => {
     </div>
   );
 }
-const mapStateToProps = (state) => ({
-  connected: state.turns.connected
-})
 
 const mapDispatchToProps = dispatch => ({
   dispatch,
@@ -64,4 +67,4 @@ const mapDispatchToProps = dispatch => ({
   freezeTurns: payload => dispatch(freezeTurns())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Peer);
+export default connect(null, mapDispatchToProps)(Peer);

@@ -24,6 +24,10 @@ function reducer(state = initialState, action) {
     case actions.UNFREEZE_TURN:
       return {...state, turnFreeze: false};
     
+    case actions.SET_CONNECTED_TO_PEER:
+      console.log('setConnected');
+      return {...state, connectedToPeer: true};
+    
     default:
       return state;
   }

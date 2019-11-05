@@ -5,12 +5,11 @@ import { changeTurns, freezeTurns } from '../turns/actions';
 export { default as reducer } from './reducer';
 
 export const Game = props => {
-  
   const handleGameTurn = (row, column) => async e => {
-    if(props.freezeTurns) return;
-    props.freezeTurns();
+    // if(props.freezeTurns) return;
+    // props.freezeTurns();
     const {turn, turnNumber, successCriteria} = props;
-    if(props.connected){
+    if(props.connectedToPeer){
       await window.peer.connectedRTC.send({
         turnNumber, row, column, turn
       })
@@ -56,7 +55,7 @@ const mapStateToProps = ({gameParams, gameState: {gameState, gameOver}, turns}) 
     turn: turns.turn,
     turnFreeze: turns.turnFreeze,
     turnNumber: turns.turnNumber,
-    connected: turns.connected 
+    connectedToPeer: turns.connectedToPeer 
   }
 };
 const mapDispatchToProps = dispatch => ({
