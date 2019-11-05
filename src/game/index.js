@@ -6,10 +6,10 @@ export { default as reducer } from './reducer';
 
 export const Game = props => {
   const handleGameTurn = (row, column) => async e => {
-    // if(props.freezeTurns) return;
-    // props.freezeTurns();
     const {turn, turnNumber, successCriteria} = props;
     if(props.connectedToPeer){
+      if(props.turnFreeze) return;
+      props.freezeTurns();
       await window.peer.connectedRTC.send({
         turnNumber, row, column, turn
       })

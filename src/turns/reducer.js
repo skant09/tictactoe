@@ -18,14 +18,12 @@ function reducer(state = initialState, action) {
       return {...state,  turnNumber: state.turnNumber++, turn: 'X'};
     
     case actions.FREEZE_TURN:
-      console.trace(' freeze turn');
       return {...state, turnFreeze: true};
     
     case actions.UNFREEZE_TURN:
       return {...state, turnFreeze: false};
     
     case actions.SET_CONNECTED_TO_PEER:
-      console.log('setConnected');
       return {...state, connectedToPeer: true};
     
     default:
