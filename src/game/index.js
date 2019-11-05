@@ -1,17 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { connect } from 'react-redux'
 import { changeGameState, checkGameOver } from './actions';
 import { changeTurns, freezeTurns } from '../turns/actions';
 export { default as reducer } from './reducer';
 
 export const Game = props => {
+  const {turn, turnNumber, size, successCriteria, connectedToPeer} = props;
+
   const handleGameTurn = (row, column) => async e => {
-    const {turn, turnNumber, successCriteria} = props;
     if(props.connectedToPeer){
       if(props.turnFreeze) return;
       props.freezeTurns();
       await window.peer.connectedRTC.send({
-        turnNumber, row, column, turn
+        turnNumber, row, column, turn, action: 'setGameState'
       })
     }
 
@@ -20,6 +21,13 @@ export const Game = props => {
       props.changeTurns({turn, turnNumber});
     }
   }
+
+  useEffect(() => {
+    console.log(connectedToPeer);
+    if(connectedToPeer){
+      window.peer.connectedRTC.send({action: 'setGameState', size, successCriteria})
+    }
+  }, [connectedToPeer]);
 
   var sizeArray = new Array(props.size).fill(0);
   const getState = (row, column) => {

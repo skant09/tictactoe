@@ -30,7 +30,10 @@ function GameParams(props){
     </div></>)
 }
 
-const mapStateToProps = (state) => ({size: state.gameParams.size, successCriteria: state.gameParams.successCriteria})
+const mapStateToProps = (state) => ({
+  size: state.gameParams.size,
+  successCriteria: state.gameParams.successCriteria
+})
 const mapDispatchToProps = dispatch => ({
   dispatch,
   changeSize: payload => parseInt(payload, 10) ? dispatch(changeSize(payload)) : null,
