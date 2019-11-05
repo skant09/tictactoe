@@ -5,7 +5,7 @@ import { combineReducers } from 'redux'
 const initGameState = [
   [0,0,0],
   [0,0,0],
-  [1,1,0]
+  [0,0,0]
 ];
 
 const getState = (row, column, turn) => {

@@ -1,21 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 import { changeGameState, checkGameOver } from './actions';
 import { changeTurns } from '../turns/actions';
 export { default as reducer } from './reducer';
 
 export const Game = props => {
-  const [position, setPosition] = useState({});
-
+  
   const handleGameTurn = (row, column) => async e => {
     const online = true;
-    const {turn, turnNumber, successCriteria, gameState} = props;
+    const {turn, turnNumber, successCriteria} = props;
     if(online){
       await window.peer.connectedRTC.send({
         turnNumber, row, column, turn
       })
     }
-    setPosition({row, column})
+
     if(props.gameState[row][column] === 0){
       // changeGameState(row, column)
       props.changeGameState({row, column, turn, successCriteria});
@@ -37,7 +36,7 @@ export const Game = props => {
     }
   }
 
-  return (<div className="game">
+  return (<div style={{'display': 'flex','flexDirection': 'column','justifyContent': 'center','textAlign': 'center', 'height': '50vh'}}><div className="game">
     { 
       sizeArray.map((value, row) => (<div className="row" key={row+' row'}>
         {sizeArray.map((value, column)=> {
@@ -45,7 +44,7 @@ export const Game = props => {
         })}
       </div>))
     }
-  </div>);
+  </div></div>);
 }
 
 
