@@ -11,6 +11,7 @@ function setDataReceive(connection, dispatch){
     console.log('data received', data);
     if(data.action === 'gameOver'){
       document.title = "GAME OVER"
+      dispatch(freezeTurns());
     }
 
     if(data.action === 'setGameState'){
