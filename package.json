@@ -1,7 +1,6 @@
 {
   "name": "@skant09/tictactoe",
   "version": "0.1.0",
-  "private": false,
   "main": "src/App.js",
   "dependencies": {
     "peerjs": "^1.1.0",

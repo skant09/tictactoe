@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
+import Peer from 'peerjs';
 
 import * as gameAction from '../game/actions';
 import { changeSize, changeSuccessCriteria } from '../gameParams/actions';
@@ -8,7 +9,7 @@ import { changeTurns, freezeTurns, unfreezeTurns, setConnectedToPeer, setWinner 
 /**
  * Peer js configuration. It is included in the index.html
 */
-var peer = window.peer = new window.Peer({key: 'lwjd5qra8257b9'});
+const peer = global.peer = new Peer({key: 'lwjd5qra8257b9'});
 
 function setDataReceive(connection, dispatch){
   connection.on('data', function(data) {
@@ -35,7 +36,7 @@ function setDataReceive(connection, dispatch){
   dispatch(setConnectedToPeer(connection.peer));
 }
 
-const Peer = props => {
+const PeerComponent = props => {
   const [peerId, setPeerID] = useState('');
   const [connectToPeerId, setConnectToPeerID] = useState('');
 
@@ -49,7 +50,7 @@ const Peer = props => {
     peer.on('connection', function(peerjsConnection) {
       setConnectToPeerID(peerjsConnection.peer);
       // TODO: find way to avoid making this global
-      window.peer.connectedRTC = peerjsConnection;
+      peer.connectedRTC = peerjsConnection;
       peerjsConnection.on('open', function(peer) {
         setDataReceive(peerjsConnection, props.dispatch);
       });
@@ -58,7 +59,7 @@ const Peer = props => {
   
   useEffect(() => {
     const connectWithPeer = async function () {
-      var peerjsConnection = window.peer.connectedRTC = await peer.connect(connectToPeerId);
+      var peerjsConnection = peer.connectedRTC = await peer.connect(connectToPeerId);
       setDataReceive(peerjsConnection, props.dispatch);
     }
     if(connectToPeerId.length > 3) {
@@ -87,4 +88,4 @@ const mapDispatchToProps = dispatch => ({
   freezeTurns: payload => dispatch(freezeTurns())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Peer);
+export default connect(mapStateToProps, mapDispatchToProps)(PeerComponent);

@@ -2103,6 +2103,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@skant09/tictactoe@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@skant09/tictactoe@workspace:."
+  dependencies:
+    gh-pages: ~3.2.1
+    peerjs: ^1.1.0
+    react: ~17.0.2
+    react-dom: ~17.0.2
+    react-redux: ^7.1.1
+    react-scripts: ~4.0.3
+    redux: ^4.0.4
+    redux-logger: ^3.0.6
+    redux-thunk: ^2.3.0
+  languageName: unknown
+  linkType: soft
+
 "@surma/rollup-plugin-off-main-thread@npm:^1.1.1":
   version: 1.4.2
   resolution: "@surma/rollup-plugin-off-main-thread@npm:1.4.2"
@@ -9464,22 +9480,6 @@ fsevents@^1.2.7:
   checksum: af1b38516c28ec95d6b0826f6c8f276c58aec391f76be42aa07646b4e39d317723e869700933ca6995b056db4b09a78c92d5440dc23657e6764be5d28874bba1
   languageName: node
   linkType: hard
-
-"mega2@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "mega2@workspace:."
-  dependencies:
-    gh-pages: ~3.2.1
-    peerjs: ^1.1.0
-    react: ~17.0.2
-    react-dom: ~17.0.2
-    react-redux: ^7.1.1
-    react-scripts: ~4.0.3
-    redux: ^4.0.4
-    redux-logger: ^3.0.6
-    redux-thunk: ^2.3.0
-  languageName: unknown
-  linkType: soft
 
 "memory-fs@npm:^0.4.1":
   version: 0.4.1

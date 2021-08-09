@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux'
+import Peer from 'peerjs';
+
 import { changeGameState, checkGameOver } from './actions';
 import { changeTurns, freezeTurns, setWinner } from '../turns/actions';
 import {isWinning} from './reducer';
