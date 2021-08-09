@@ -8,6 +8,6 @@ import {reducer as gameState} from '../game';
 import logger from 'redux-logger'
 
 const rootReducer = combineReducers({gameParams, turns, gameState})
-const store = createStore(rootReducer, applyMiddleware(...[thunk]));
+const store = createStore(rootReducer, applyMiddleware(...[thunk, logger]));
 
 export default store;

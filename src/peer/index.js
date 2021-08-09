@@ -5,7 +5,11 @@ import * as gameAction from '../game/actions';
 import { changeSize, changeSuccessCriteria } from '../gameParams/actions';
 import { changeTurns, freezeTurns, unfreezeTurns, setConnectedToPeer, setWinner } from '../turns/actions';
 
+/**
+ * Peer js configuration. It is included in the index.html
+*/
 var peer = window.peer = new window.Peer({key: 'lwjd5qra8257b9'});
+
 function setDataReceive(connection, dispatch){
   connection.on('data', function(data) {
     console.log('data received', data);

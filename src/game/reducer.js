@@ -2,12 +2,19 @@ import * as actions from './actions';
 import * as gameParamsActions from '../gameParams/actions'
 import { combineReducers } from 'redux'
 
+/**
+ *  Initial game state for 3 * 3 game
+*/
 const initGameState = [
   [0,0,0],
   [0,0,0],
   [0,0,0]
 ];
 
+/**
+ *  Convert `X` move to 2, and `0` move to 1
+ *  Empty values are considered 0
+*/
 const getState = (row, column, turn) => {
   if(turn === 'X'){
     return  2;
@@ -16,10 +23,13 @@ const getState = (row, column, turn) => {
   }
 }
 
+/**
+ *  Finds complete length of contnuous valus 
+*/
 function findLengthInDirection(position, gameState, value, change) {
-  let {row, column} = position;
-  let upwardLength = 0;
-  let downwardLength = 0;
+  let {row, column} = position; // current position of move
+  let upwardLength = 0; // continuous upward chain length of same values
+  let downwardLength = 0; // continuous downward chain length of same values
   // positive direction
   while(row >= 0 && row < gameState.length && column >= 0 && column < gameState.length && gameState[row][column]) {
     if(gameState[row][column] === value){
@@ -44,6 +54,9 @@ function findLengthInDirection(position, gameState, value, change) {
   return upwardLength + downwardLength;
 }
 
+/**
+ *  @description Checks if the current move is winning move by checking the complete game state
+*/
 export function isWinning({row, column}, gameState, successCriteria){
   var directions = [[1,0], [0, 1], [-1, -1], [-1, 1]];
   for (var i=0; i < directions.length; i++) {
@@ -54,6 +67,10 @@ export function isWinning({row, column}, gameState, successCriteria){
   }
   return false;
 }
+
+/**
+ * Game state reducer
+*/
 
 function gameState(state = initGameState, action) {
   switch (action.type) {
@@ -80,6 +97,9 @@ function gameState(state = initGameState, action) {
   }
 }
 
+/**
+ *  Check if the game is over using game state
+*/
 function gameOver(state = false, action){
   switch(action.type){
     case actions.CHECK_GAME_OVER:

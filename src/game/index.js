@@ -5,6 +5,9 @@ import { changeTurns, freezeTurns, setWinner } from '../turns/actions';
 import {isWinning} from './reducer';
 export { default as reducer } from './reducer';
 
+/**
+ *  React component for rendering the game
+*/
 export const Game = props => {
   const {turn, turnNumber, size, successCriteria, connectedToPeer, winner} = props;
   const [position, setPosition] = useState({});
