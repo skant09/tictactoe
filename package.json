@@ -1,7 +1,8 @@
 {
-  "name": "mega2",
+  "name": "@skant09/tictactoe",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "main": "src/App.js",
   "dependencies": {
     "peerjs": "^1.1.0",
     "react": "~17.0.2",
@@ -37,5 +38,9 @@
   },
   "devDependencies": {
     "gh-pages": "~3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skant09/tictactoe.git"
   }
 }
