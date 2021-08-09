@@ -9,7 +9,14 @@ import { changeTurns, freezeTurns, unfreezeTurns, setConnectedToPeer, setWinner 
 /**
  * Peer js configuration. It is included in the index.html
 */
-const peer = global.peer = new Peer({key: 'lwjd5qra8257b9'});
+export const getPeer = () => {
+  if(!global.peer) {
+    global.peer = global.peer = new Peer();
+    return global.peer
+  }
+  console.log(global.peer);
+  return global.peer;
+}
 
 function setDataReceive(connection, dispatch){
   connection.on('data', function(data) {
@@ -41,16 +48,16 @@ const PeerComponent = props => {
   const [connectToPeerId, setConnectToPeerID] = useState('');
 
   useEffect(() => {
-    peer.on('open', function(id) {
+    getPeer().on('open', function(id) {
       setPeerID(id);
     });
   }, [])
 
   useEffect(()=>{
-    peer.on('connection', function(peerjsConnection) {
+    getPeer().on('connection', function(peerjsConnection) {
       setConnectToPeerID(peerjsConnection.peer);
       // TODO: find way to avoid making this global
-      peer.connectedRTC = peerjsConnection;
+      getPeer().connectedRTC = peerjsConnection;
       peerjsConnection.on('open', function(peer) {
         setDataReceive(peerjsConnection, props.dispatch);
       });
@@ -59,7 +66,7 @@ const PeerComponent = props => {
   
   useEffect(() => {
     const connectWithPeer = async function () {
-      var peerjsConnection = peer.connectedRTC = await peer.connect(connectToPeerId);
+      var peerjsConnection = getPeer().connectedRTC = await getPeer().connect(connectToPeerId);
       setDataReceive(peerjsConnection, props.dispatch);
     }
     if(connectToPeerId.length > 3) {
